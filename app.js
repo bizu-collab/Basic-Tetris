@@ -30,11 +30,25 @@ function drawBoard(){
 }
 
 drawBoard();
+
+const PIECES=[
+    [Z,"red"],
+    [S,"green"],
+    [T,"yellow"],
+    [O,"blue"],
+    [L,"purple"],
+    [J,"orange"]
+    
+
+
+];
 //create piece
 function piece(tetromino, color){
     this.tetromino=tetromino;
     this.color=color;
     this.tetrominoN=0;
     this.activeTetromino=this.tetromino[this.tetrominoN];
-
+   //cordinates
+    this.x=0;
+    this.y=0;
 }
