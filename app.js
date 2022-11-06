@@ -30,3 +30,11 @@ function drawBoard(){
 }
 
 drawBoard();
+//create piece
+function piece(tetromino, color){
+    this.tetromino=tetromino;
+    this.color=color;
+    this.tetrominoN=0;
+    this.activeTetromino=this.tetromino[this.tetrominoN];
+
+}
