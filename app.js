@@ -31,24 +31,40 @@ function drawBoard(){
 
 drawBoard();
 
-const PIECES=[
+
+
+const PIECES = [
     [Z,"red"],
     [S,"green"],
     [T,"yellow"],
     [O,"blue"],
     [L,"purple"],
+    [I,"cyan"],
     [J,"orange"]
-    
-
-
 ];
-//create piece
-function piece(tetromino, color){
-    this.tetromino=tetromino;
-    this.color=color;
-    this.tetrominoN=0;
-    this.activeTetromino=this.tetromino[this.tetrominoN];
-   //cordinates
-    this.x=0;
-    this.y=0;
+
+let p = new Piece(PIECES[0][0],PIECES[0][1]);
+function Piece(tetromino,color){
+    this.tetromino = tetromino;
+    this.color = color;
+    
+    this.tetrominoN = 0; // we start from the first pattern
+    this.activeTetromino = this.tetromino[this.tetrominoN];
+    
+    // we need to control the pieces xy cordinate
+    this.x = 0;
+    this.y = 0;
 }
+Piece.prototype.draw = function(){
+    for( r = 0; r <this.activeTetromino.length; r++){
+        for(c = 0; c < this.activeTetromino.length; c++){
+            if(this.activeTetromino[r][c]){
+                drawSquare(this.x+c,this.y+r, this.color)
+            }
+            
+        }
+    }
+
+   
+}
+p.draw();
