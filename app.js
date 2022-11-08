@@ -93,6 +93,7 @@ Piece.prototype.moveDown= function(){
         this.y++;
         this.draw();
     }else {
+        this.lock();
        p = randomPiece(); 
     }
 }
@@ -138,6 +139,48 @@ Piece.prototype.rotate = function(){
         this.draw();
     }
 }
+Piece.prototype.lock = function(){
+    for( r = 0; r < this.activeTetromino.length; r++){
+        for(c = 0; c < this.activeTetromino.length; c++){
+            // we skip the vacant squares
+            if( !this.activeTetromino[r][c]){
+                continue;
+            }
+            // pieces to lock on top = game over
+            if(this.y + r < 0){
+                alert("Game Over");
+                // stop request animation frame
+                gameOver = true;
+                break;
+            }
+            board[this.y+r][this.x+c] = this.color;
+        }
+    }
+    for(r = 0; r < ROW; r++){
+        let isRowFull = true;
+        for( c = 0; c < COL; c++){
+            isRowFull = isRowFull && (board[r][c] != VACANT);
+        }
+        if(isRowFull){
+            // if the row is full
+            // we move down all the rows above it
+            for( y = r; y > 1; y--){
+                for( c = 0; c < COL; c++){
+                    board[y][c] = board[y-1][c];
+                }
+            }
+            // the top row board[0][..] has no row above it
+            for( c = 0; c < COL; c++){
+                board[0][c] = VACANT;
+            }
+            // increment the score
+            score += 10;
+        }
+    }
+    // update the board
+    drawBoard();
+}
+
  // detect the collision 
  Piece.prototype.collision = function(x,y,piece){
     for( r = 0; r < piece.length; r++){
@@ -185,6 +228,7 @@ function CONTROL(event){
     }
 }
 let dropStart = Date.now();
+let gameOver = false
 function drop(){
     let now= Date.now();
     let delta =now - dropStart;
@@ -194,6 +238,8 @@ function drop(){
 
     }
     
-    requestAnimationFrame(drop);
+    if( !gameOver){
+        requestAnimationFrame(drop);
+    }
 }
 drop();
