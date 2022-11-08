@@ -52,19 +52,88 @@ function Piece(tetromino,color){
     this.activeTetromino = this.tetromino[this.tetrominoN];
     
     // we need to control the pieces xy cordinate
-    this.x = 0;
-    this.y = 0;
+    this.x = 3;
+    this.y = 10;
 }
-Piece.prototype.draw = function(){
+Piece.prototype.fill =function(color){
     for( r = 0; r <this.activeTetromino.length; r++){
         for(c = 0; c < this.activeTetromino.length; c++){
             if(this.activeTetromino[r][c]){
-                drawSquare(this.x+c,this.y+r, this.color)
+                drawSquare(this.x+c,this.y+r, color)
             }
             
         }
     }
 
+
+}
+//draw
+Piece.prototype.draw = function(){
+    this.fill(this.color);
+    
    
 }
-p.draw();
+
+//undraw
+Piece.prototype.unDraw = function(){
+    this.fill(VACANT);
+    
+
+}
+//moveDown
+Piece.prototype.moveDown= function(){
+    this.unDraw();
+    this.y++;
+    this.draw();
+}
+//moveRight the piece
+Piece.prototype.moveRight=function(){
+    this.unDraw();
+    this.x++;
+    this.y++;
+    this.draw();
+}
+//moveLeft the piece
+Piece.prototype.moveLeft=function(){
+    this.unDraw();
+    this.x--;
+    this.y++;
+    this.draw();
+
+}
+// pice rotation 
+Piece.prototype.rotate= function(){
+    this.unDraw();
+    this.tetrominoN=(this.tetrominoN+1)%this.tetromino.length;
+    this.activeTetromino=this.activeTetromino[this.tetrominoN];
+    this.draw();
+}
+// control pieces 
+document.addEventListener("keydown",CONTROL);
+
+function CONTROL(event) {
+    if(event.keyCod == 37){
+        p.moveLeft();
+
+    }else if(event.keyCod == 38){
+        p.rotate();
+
+    }else if(event.keyCod == 39){
+        p.moveRight();
+    }else if(event.keyCod == 40){
+        p.moveDown();
+    }
+}
+let dropStart = Date.now();
+function drop(){
+    let now= Date.now();
+    let delta =now - dropStart;
+    if(delta > 1000){
+        p.moveDown();
+        dropStart=Date.now();
+
+    }
+    
+    requestAnimationFrame(drop);
+}
+drop();
