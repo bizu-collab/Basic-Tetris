@@ -108,6 +108,14 @@ Piece.prototype.rotate= function(){
     this.activeTetromino=this.activeTetromino[this.tetrominoN];
     this.draw();
 }
+ // detect the collision 
+ Piece.prototype.collision =function(){
+    for(r=0;r<Piece.length;r++){
+        
+    }
+
+    
+ }
 // control pieces 
 document.addEventListener("keydown",CONTROL);
 
@@ -140,4 +148,3 @@ function drop(){
     
     requestAnimationFrame(drop);
 }
-drop();
