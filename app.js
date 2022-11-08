@@ -43,7 +43,13 @@ const PIECES = [
     [J,"orange"]
 ];
 
-let p = new Piece(PIECES[0][0],PIECES[0][1]);
+//generate random shape
+function randomPiece(){
+    let r = randomN = Math.floor(Math.random() * PIECES.length) // 0 -> 6
+    return new Piece( PIECES[r][0],PIECES[r][1]);
+}
+
+let p = randomPiece();
 function Piece(tetromino,color){
     this.tetromino = tetromino;
     this.color = color;
@@ -86,6 +92,8 @@ Piece.prototype.moveDown= function(){
         this.unDraw();
         this.y++;
         this.draw();
+    }else {
+       p = randomPiece(); 
     }
 }
 
@@ -108,14 +116,28 @@ Piece.prototype.moveLeft = function(){
 }
 
 // pice rotation 
-Piece.prototype.rotate= function(){
-    if(!this.collision(-1,0,this.activeTetromino)){
+Piece.prototype.rotate = function(){
+    let nextPattern = this.tetromino[(this.tetrominoN + 1)%this.tetromino.length];
+    let kick = 0;
+    
+    if(this.collision(0,0,nextPattern)){
+        if(this.x > COL/2){
+            // it's the right wall
+            kick = -1; // we need to move the piece to the left
+        }else{
+            // it's the left wall
+            kick = 1; // we need to move the piece to the right
+        }
+    }
+    
+    if(!this.collision(kick,0,nextPattern)){
         this.unDraw();
-        this.tetrominoN=(this.tetrominoN + 1)%this.tetromino.length;
-        this.activeTetromino=this.tetromino[this.tetrominoN];
-        
+        this.x += kick;
+        this.tetrominoN = (this.tetrominoN + 1)%this.tetromino.length; // (0+1)%4 => 1
+        this.activeTetromino = this.tetromino[this.tetrominoN];
         this.draw();
-}}
+    }
+}
  // detect the collision 
  Piece.prototype.collision = function(x,y,piece){
     for( r = 0; r < piece.length; r++){
