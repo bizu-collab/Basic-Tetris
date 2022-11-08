@@ -52,8 +52,8 @@ function Piece(tetromino,color){
     this.activeTetromino = this.tetromino[this.tetrominoN];
     
     // we need to control the pieces xy cordinate
-    this.x = 0;
-    this.y = 0;
+    this.x = 3;
+    this.y = -2;
 }
 Piece.prototype.fill =function(color){
     for( r = 0; r <this.activeTetromino.length; r++){
@@ -82,58 +82,84 @@ Piece.prototype.unDraw = function(){
 }
 //moveDown
 Piece.prototype.moveDown= function(){
-    this.unDraw();
-    this.y++;
-    this.draw();
+    if(!this.collision(0,1,this.activeTetromino)){
+        this.unDraw();
+        this.y++;
+        this.draw();
+    }
 }
-//moveRight the piece
-Piece.prototype.moveRight=function(){
-    this.unDraw();
-    this.x++;
-    this.y++;
-    this.draw();
-}
-//moveLeft the piece
-Piece.prototype.moveLeft=function(){
-    this.unDraw();
-    this.x--;
-    this.y++;
-    this.draw();
 
+//moveRight the piece
+Piece.prototype.moveRight = function(){
+    if(!this.collision(1,0,this.activeTetromino)){
+        this.unDraw();
+        this.x++;
+        this.draw();
+    }
 }
+
+//moveLeft the piece
+Piece.prototype.moveLeft = function(){
+    if(!this.collision(-1,0,this.activeTetromino)){
+        this.unDraw();
+        this.x--;
+        this.draw();
+    }
+}
+
 // pice rotation 
 Piece.prototype.rotate= function(){
-    this.unDraw();
-    this.tetrominoN=(this.tetrominoN+1)%this.tetromino.length;
-    this.activeTetromino=this.activeTetromino[this.tetrominoN];
-    this.draw();
-}
- // detect the collision 
- Piece.prototype.collision =function(){
-    for(r=0;r<Piece.length;r++){
+    if(!this.collision(-1,0,this.activeTetromino)){
+        this.unDraw();
+        this.tetrominoN=(this.tetrominoN + 1)%this.tetromino.length;
+        this.activeTetromino=this.tetromino[this.tetrominoN];
         
+        this.draw();
+}}
+ // detect the collision 
+ Piece.prototype.collision = function(x,y,piece){
+    for( r = 0; r < piece.length; r++){
+        for(c = 0; c < piece.length; c++){
+            // if the square is empty, we skip it
+            if(!piece[r][c]){
+                continue;
+            }
+            // coordinates of the piece after movement
+            let newX = this.x + c + x;
+            let newY = this.y + r + y;
+            
+            // conditions
+            if(newX < 0 || newX >= COL || newY >= ROW){
+                return true;
+            }
+            // skip newY < 0; board[-1] will crush our game
+            if(newY < 0){
+                continue;
+            }
+            // check if there is a locked piece alrady in place
+            if( board[newY][newX] != VACANT){
+                return true;
+            }
+        }
     }
-
-    
- }
+    return false;
+}
+  
 // control pieces 
 document.addEventListener("keydown",CONTROL);
 
 function CONTROL(event){
     if(event.keyCode == 37){
         p.moveLeft();
-        dropStart=Date.now();
-
+        dropStart = Date.now();
     }else if(event.keyCode == 38){
         p.rotate();
-        dropStart=Date.now();
-
+        dropStart = Date.now();
     }else if(event.keyCode == 39){
         p.moveRight();
-        dropStart=Date.now();
+        dropStart = Date.now();
     }else if(event.keyCode == 40){
         p.moveDown();
-        dropStart=Date.now();
     }
 }
 let dropStart = Date.now();
@@ -148,3 +174,4 @@ function drop(){
     
     requestAnimationFrame(drop);
 }
+drop();
