@@ -52,8 +52,8 @@ function Piece(tetromino,color){
     this.activeTetromino = this.tetromino[this.tetrominoN];
     
     // we need to control the pieces xy cordinate
-    this.x = 3;
-    this.y = 10;
+    this.x = 0;
+    this.y = 0;
 }
 Piece.prototype.fill =function(color){
     for( r = 0; r <this.activeTetromino.length; r++){
@@ -111,17 +111,21 @@ Piece.prototype.rotate= function(){
 // control pieces 
 document.addEventListener("keydown",CONTROL);
 
-function CONTROL(event) {
-    if(event.keyCod == 37){
+function CONTROL(event){
+    if(event.keyCode == 37){
         p.moveLeft();
+        dropStart=Date.now();
 
-    }else if(event.keyCod == 38){
+    }else if(event.keyCode == 38){
         p.rotate();
+        dropStart=Date.now();
 
-    }else if(event.keyCod == 39){
+    }else if(event.keyCode == 39){
         p.moveRight();
-    }else if(event.keyCod == 40){
+        dropStart=Date.now();
+    }else if(event.keyCode == 40){
         p.moveDown();
+        dropStart=Date.now();
     }
 }
 let dropStart = Date.now();
