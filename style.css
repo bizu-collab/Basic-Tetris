@@ -1,14 +1,13 @@
-.grid{
-    width: 200px;
-    height: 400;
-    background-color: yellow;
-    display: flex;
-    flex-wrap: wrap;
-
-
+#score{
+    display: inline-block;
 }
-.grid div{
-    height: 20px;
-    width: 20px;
-    background-color: red;
+div{
+    font-size: 25px;
+    font-weight: bold;
+    font-family: monospace;
+    text-align: center;
+}
+canvas{
+    display: block;
+    margin:0 auto;
 }

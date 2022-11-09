@@ -144,6 +144,7 @@ Piece.prototype.rotate = function(){
 }
 
 let score = 0;
+
 Piece.prototype.lock = function(){
     for( r = 0; r < this.activeTetromino.length; r++){
         for(c = 0; c < this.activeTetromino.length; c++){
@@ -158,9 +159,11 @@ Piece.prototype.lock = function(){
                 gameOver = true;
                 break;
             }
+            // we lock the piece
             board[this.y+r][this.x+c] = this.color;
         }
     }
+    // remove full rows
     for(r = 0; r < ROW; r++){
         let isRowFull = true;
         for( c = 0; c < COL; c++){
@@ -184,6 +187,7 @@ Piece.prototype.lock = function(){
     }
     // update the board
     drawBoard();
+    scoreElement.innerHTML = score;
 }
 
  // detect the collision 
