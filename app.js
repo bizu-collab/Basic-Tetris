@@ -1,5 +1,8 @@
 const cvs=document.getElementById("tetries"); 
 const ctx=cvs.getContext("2d");
+
+const scoreElement = document.getElementById("score");
+
 const ROW=20;
 const COL=COLUMN=10;
 const SQ=squareSize=20;
@@ -139,6 +142,8 @@ Piece.prototype.rotate = function(){
         this.draw();
     }
 }
+
+let score = 0;
 Piece.prototype.lock = function(){
     for( r = 0; r < this.activeTetromino.length; r++){
         for(c = 0; c < this.activeTetromino.length; c++){
