@@ -3,6 +3,8 @@ const ctx=cvs.getContext("2d");
 
 const scoreElement = document.getElementById("score");
 
+
+
 const ROW=20;
 const COL=COLUMN=10;
 const SQ=squareSize=20;
